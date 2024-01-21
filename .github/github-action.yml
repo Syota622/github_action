@@ -2,7 +2,7 @@ name: workflow dispatch
 on:
   push:
     branches:
-      - add-workflow-dispatch
+      - main
   # workflow_dispatch: {}
 
 jobs:
