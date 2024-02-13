@@ -6,7 +6,7 @@ on:
       - main
       - develop
   pull_request:
-    types: [closed]
+    # types: [closed]
     branches:
       - main
       - develop
@@ -39,9 +39,9 @@ jobs:
     - name: Load environment variables
       run: |
         if [[ "${{ github.base_ref }}" == "develop" ]]; then
-          echo "::set-output name=ENV_FILE::.github/workflows/.env.dev"
+          ENV_FILE=".github/workflows/.env.dev"
         elif [[ "${{ github.base_ref }}" == "main" ]]; then
-          echo "::set-output name=ENV_FILE::.github/workflows/.env.prod"
+          ENV_FILE=".github/workflows/.env.prod"
         fi
  
         if [ -f "$ENV_FILE" ]; then
