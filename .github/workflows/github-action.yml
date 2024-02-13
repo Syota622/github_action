@@ -14,7 +14,7 @@ on:
 permissions:
   id-token: write
   contents: read
- 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -41,9 +41,9 @@ jobs:
     # .env ファイルから環境変数を読み込む
     - name: Load environment variables
       run: |
-        if [[ "${{ github.base_ref }}" == "develop" ]]; then
+        if [[ "${{ github.ref_name }}" == "develop" ]]; then
           ENV_FILE=".github/workflows/.env.dev"
-        elif [[ "${{ github.base_ref }}" == "main" ]]; then
+        elif [[ "${{ github.ref_name }}" == "main" ]]; then
           ENV_FILE=".github/workflows/.env.prod"
         fi
  
