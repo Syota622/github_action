@@ -1,37 +1,61 @@
-name: Manual Workflow
+name: Deploy to AWS Fargate
 
 on:
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test tags'
-        required: false
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - develop
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
+    # github variable 出力
+    - name: Print github
       run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        echo '1' $GITHUB_REF
+        echo '2' ${{ github.ref }}
+        echo '3' ${{ github.ref_name }}
+        echo '4' ${{ github.head_ref }}
+        echo '5' ${{ github.base_ref }}
 
-    - name: Run a script
-      run: echo "Hello, world!"
-      
-    - name: Run a multi-line script
+    # .env ファイルから環境変数を読み込む
+    - name: Load environment variables
       run: |
-        echo "This is a multi-line script."
-        echo "Log level is ${{ github.event.inputs.logLevel }}"
-        echo "Tags are ${{ github.event.inputs.tags }}"
+        if [[ "${{ github.ref }}" == "refs/heads/develop" || "${{ github.head_ref }}" == "develop" ]]; then
+          echo "::set-output name=ENV_FILE::.github/workflows/.env.dev"
+        elif [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.head_ref }}" == "main" ]]; then
+          echo "::set-output name=ENV_FILE::.github/workflows/.env.prod"
+        fi
+
+        if [ -f "$ENV_FILE" ]; then
+        echo "Loading environment variables from $ENV_FILE"
+        while IFS='=' read -r key value || [[ -n $key ]]; do
+          if [[ -n $key ]]; then
+            echo "$key=$value" >> $GITHUB_ENV
+          fi
+        done < "$ENV_FILE"
+        else
+          echo "Environment file $ENV_FILE not found"
+        fi
+
+    # 環境変数 出力 
+    - name: Print environment variables
+      run: |
+        echo "ECR_APP_NGINX_REPOSITORY: $ECR_APP_NGINX_REPOSITORY"
+        echo "ECR_APP_REPOSITORY: $ECR_APP_REPOSITORY"
+        echo "ECS_CLUSTER: $ECS_CLUSTER"
+        echo "ECS_SERVICE: $ECS_SERVICE"
