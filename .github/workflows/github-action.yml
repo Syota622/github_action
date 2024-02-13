@@ -44,7 +44,7 @@ jobs:
         elif [[ "${{ github.base_ref }}" == "main" ]]; then
           echo "::set-output name=ENV_FILE::.github/workflows/.env.prod"
         fi
-
+ 
         if [ -f "$ENV_FILE" ]; then
         echo "Loading environment variables from $ENV_FILE"
         while IFS='=' read -r key value || [[ -n $key ]]; do
