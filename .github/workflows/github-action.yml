@@ -24,6 +24,10 @@ jobs:
     - uses: actions/checkout@v4
 
     # github variable 出力
+    # github.ref: ワークフローがトリガーされたリファレンスまたはブランチ。プルリクエストの場合、この値はプルリクエストのマージブランチになります（例：refs/pull/:prNumber/merge）。
+    # github.ref_name: ワークフローがトリガーされたリファレンスの名前。これはブランチ名またはタグ名になります。
+    # github.head_ref: プルリクエストのソースブランチの名前。プルリクエスト以外のイベントではこの値は空です。
+    # github.base_ref: プルリクエストのターゲットブランチの名前。プルリクエスト以外のイベントではこの値は空です。
     - name: Print github
       run: |
         echo '1' $GITHUB_REF
@@ -35,9 +39,9 @@ jobs:
     # .env ファイルから環境変数を読み込む
     - name: Load environment variables
       run: |
-        if [[ "${{ github.ref }}" == "refs/heads/develop" || "${{ github.head_ref }}" == "develop" ]]; then
+        if [[ "${{ github.base_ref }}" == "develop" ]]; then
           echo "::set-output name=ENV_FILE::.github/workflows/.env.dev"
-        elif [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.head_ref }}" == "main" ]]; then
+        elif [[ "${{ github.base_ref }}" == "main" ]]; then
           echo "::set-output name=ENV_FILE::.github/workflows/.env.prod"
         fi
 
