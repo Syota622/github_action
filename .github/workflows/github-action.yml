@@ -8,6 +8,8 @@ on:
   pull_request:
     branches:
       - main
+    # opened: プルリクエストが作成されたとき
+    # synchronize: プルリクエストが更新されたとき
     types: [opened, synchronize]
 
 jobs:
