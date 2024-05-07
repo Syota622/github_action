@@ -1,7 +1,29 @@
 # GitHub Ation
 https://github.com/Syota622/github_action_common
 
-# github_action
-test
-test
-test
+# featureからdevelopへmerge
+- dev
+1 $GITHUB_REF: refs/heads/develop
+2 github.ref: refs/heads/develop
+3 github.ref_name: develop
+4 github.head_ref:
+5 github.base_ref:
+6 github.event_name: push
+echo: 空白
+
+# developからmainへプルリクエスト
+- stg
+1 $GITHUB_REF: refs/pull/17/merge
+2 github.ref: refs/pull/17/merge
+3 github.ref_name: 17/merge
+4 github.head_ref: develop
+5 github.base_ref: main
+6 github.event_name: pull_request
+echo: stg
+
+# 作成したプルリクエストの状態でdevelopへpush/merge
+- dev
+
+- stg
+
+# developからmainへマージ
