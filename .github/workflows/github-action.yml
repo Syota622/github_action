@@ -8,10 +8,12 @@ on:
   pull_request:
     branches:
       - main
+    # opened: プルリクエストが作成されたとき
+    # synchronize: プルリクエストが更新されたとき
     types: [opened, synchronize]
 
 jobs:
   call-deployment-workflow:
     uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
     with:
-      environment: 'production'
+      ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'prod' || github.event_name == 'pull_request' && 'stg' || github.ref == 'refs/heads/develop' && 'dev' }}
