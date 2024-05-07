@@ -16,4 +16,4 @@ jobs:
   call-deployment-workflow:
     uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
     with:
-      environment: 'production'
+      ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'prod' || github.event_name == 'pull_request' && 'stg' || github.ref == 'refs/heads/develop' && 'dev' }}
