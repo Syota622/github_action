@@ -10,5 +10,3 @@ jobs:
     uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
     with:
       environment: 'production'
-    secrets:
-      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
