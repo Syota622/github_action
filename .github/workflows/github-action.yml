@@ -1,67 +1,17 @@
-name: Deploy to AWS Fargate
+name: Deploy Application
 
 on:
   push:
     branches:
-      - main
       - develop
-  # pull_request:
-  #   types: [closed]
-  #   branches:
-  #     - main
-  #     - develop
- 
-permissions:
-  id-token: write
-  contents: read
- 
+      - main
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]
+
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    # if: >
-    #   github.event_name == 'push' ||
-    #   (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
- 
-    steps:
-    - uses: actions/checkout@v4
-
-    # github variable 出力
-    # github.ref: ワークフローがトリガーされたリファレンスまたはブランチ。プルリクエストの場合、この値はプルリクエストのマージブランチになります（例：refs/pull/:prNumber/merge）。
-    # github.ref_name: ワークフローがトリガーされたリファレンスの名前。これはブランチ名またはタグ名になります。
-    # github.head_ref: プルリクエストのソースブランチの名前。プルリクエスト以外のイベントではこの値は空です。
-    # github.base_ref: プルリクエストのターゲットブランチの名前。プルリクエスト以外のイベントではこの値は空です。
-    - name: Print github
-      run: |
-        echo '1' $GITHUB_REF
-        echo '2' ${{ github.ref }}
-        echo '3' ${{ github.ref_name }}
-        echo '4' ${{ github.head_ref }}
-        echo '5' ${{ github.base_ref }}
-
-    # .env ファイルから環境変数を読み込む
-    - name: Load environment variables
-      run: |
-        if [[ "${{ github.ref_name }}" == "develop" ]]; then
-          ENV_FILE=".github/workflows/.env.dev"
-        elif [[ "${{ github.ref_name }}" == "main" ]]; then
-          ENV_FILE=".github/workflows/.env.prod"
-        fi
- 
-        if [ -f "$ENV_FILE" ]; then
-        echo "Loading environment variables from $ENV_FILE"
-        while IFS='=' read -r key value || [[ -n $key ]]; do
-          if [[ -n $key ]]; then
-            echo "$key=$value" >> $GITHUB_ENV
-          fi
-        done < "$ENV_FILE"
-        else
-          echo "Environment file $ENV_FILE not found"
-        fi
-
-    # 環境変数 出力 
-    - name: Print environment variables
-      run: |
-        echo "ECR_APP_NGINX_REPOSITORY: $ECR_APP_NGINX_REPOSITORY"
-        echo "ECR_APP_REPOSITORY: $ECR_APP_REPOSITORY"
-        echo "ECS_CLUSTER: $ECS_CLUSTER"
-        echo "ECS_SERVICE: $ECS_SERVICE"
+  call-deployment-workflow:
+    uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
+    with:
+      environment: 'production'
