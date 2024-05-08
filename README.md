@@ -13,9 +13,9 @@ echo: dev
 
 # developからmainへプルリクエスト
 - stg
-1 $GITHUB_REF: refs/pull/17/merge
-2 github.ref: refs/pull/17/merge
-3 github.ref_name: 17/merge
+1 $GITHUB_REF: refs/pull/20/merge
+2 github.ref: refs/pull/20/merge
+3 github.ref_name: 20/merge
 4 github.head_ref: develop
 5 github.base_ref: main
 6 github.event_name: pull_request
