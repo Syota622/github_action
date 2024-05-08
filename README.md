@@ -1,4 +1,4 @@
-# GitHub Ation（共通リポジトリ）
+# GitHub Ation（共通リポジトリ: 本リポジトリのpushをトリガーに、共通リポジトリのGitHub Actionsが実行される）
 https://github.com/Syota622/github_action_common
 
 # featureからdevelopへmerge
