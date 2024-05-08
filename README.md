@@ -9,7 +9,7 @@ https://github.com/Syota622/github_action_common
 4 github.head_ref:
 5 github.base_ref:
 6 github.event_name: push
-echo: 空白
+echo: dev
 
 # developからmainへプルリクエスト
 - stg
@@ -29,7 +29,7 @@ echo: stg
 4 github.head_ref:
 5 github.base_ref:
 6 github.event_name: push
-echo: 空白
+echo: dev
 
 - stg
 1 $GITHUB_REF: refs/pull/17/merge
