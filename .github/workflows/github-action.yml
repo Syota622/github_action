@@ -16,4 +16,13 @@ jobs:
   call-deployment-workflow:
     uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
     with:
-      ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'prod' || github.event_name == 'pull_request' && 'stg' || github.ref == 'refs/heads/develop' && 'dev' }}
+      ENV_VAR: >-
+        # 分岐条件：
+        # - mainブランチへのプッシュ: 本番環境へデプロイ ('prod')
+        # - mainブランチへのプルリクエスト: ステージング環境へデプロイ ('stg')
+        # - developブランチへのプッシュ: 開発環境へデプロイ ('dev')
+        ${{ 
+          github.ref == 'refs/heads/main' && 'prod' || 
+          github.event_name == 'pull_request' && 'stg' || 
+          github.ref == 'refs/heads/develop' && 'dev' 
+        }}
