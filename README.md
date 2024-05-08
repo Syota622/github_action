@@ -1,4 +1,4 @@
-# GitHub Ation
+# GitHub Ation（共通リポジトリ）
 https://github.com/Syota622/github_action_common
 
 # featureからdevelopへmerge
