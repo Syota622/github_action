@@ -16,7 +16,7 @@ jobs:
   call-deployment-workflow:
     uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
     with:
-      ENV_VAR: >-
+      ENV_VAR: >
         # 分岐条件：
         # - mainブランチへのプッシュ: 本番環境へデプロイ ('prod')
         # - mainブランチへのプルリクエスト: ステージング環境へデプロイ ('stg')
