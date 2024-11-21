@@ -12,6 +12,10 @@ on:
     # synchronize: プルリクエストが更新されたとき
     types: [opened, synchronize]
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   call-deployment-workflow:
     uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
@@ -22,3 +26,6 @@ jobs:
           github.event_name == 'pull_request' && 'stg' || 
           github.ref == 'refs/heads/develop' && 'dev' 
         }}
+    secrets:
+      # SLACK_WEBHOOK_URL_STG: ${{ secrets.SLACK_WEBHOOK_URL_STG }}
+      SLACK_WEBHOOK_URL_FAILED: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
