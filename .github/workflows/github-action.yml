@@ -29,3 +29,4 @@ jobs:
     secrets:
       # SLACK_WEBHOOK_URL_STG: ${{ secrets.SLACK_WEBHOOK_URL_STG }}
       SLACK_WEBHOOK_URL_FAILED: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
+      SLACK_WEBHOOK_URL_FAILED_2: ${{ secrets.SLACK_WEBHOOK_URL_FAILED_2 }}
