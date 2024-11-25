@@ -39,12 +39,8 @@ jobs:
           SLACK_TITLE: GitHub Actions 失敗通知
           SLACK_COLOR: danger
           SLACK_MESSAGE: |
-            <!here> GitHub Actionsが失敗しました
+            <@U01J4SS8YKT> GitHub Actionsが失敗しました
             ワークフロー: ${{ github.workflow }}
             リポジトリ: ${{ github.repository }}
             ブランチ: ${{ github.ref_name }}
             実行URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-  # わざと失敗させるステップを追加: You have an error in your yaml syntax on line
-  - name: Force Failure
-    run: exit 1
