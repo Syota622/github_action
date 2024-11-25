@@ -26,9 +26,6 @@ jobs:
           github.event_name == 'pull_request' && 'stg' || 
           github.ref == 'refs/heads/develop' && 'dev' 
         }}
-    # secrets:
-    #   SLACK_WEBHOOK_URL_FAILED: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
-    #   SLACK_WEBHOOK_URL_FAILED_2: ${{ secrets.SLACK_WEBHOOK_URL_FAILED_2 }}
 
   notify-error:
     needs: [call-deployment-workflow]
