@@ -48,7 +48,6 @@ jobs:
             ブランチ: ${{ github.ref_name }}
             実行URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-
-  # わざと失敗させるステップを追加: You have an error in your yaml syntax on line
-  - name: Force Failure
-    run: exit 1
+  # # わざと失敗させるステップを追加: You have an error in your yaml syntax on line
+  # - name: Force Failure
+  #   run: exit 1
