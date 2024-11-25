@@ -32,12 +32,11 @@ jobs:
 
   notify-error:
     needs: [call-deployment-workflow]
-    if: always()
+    if: failure()  # 失敗時のみ実行
     runs-on: ubuntu-latest
     steps:
-      - name: Check and Notify Errors
+      - name: Notify Errors
         uses: rtCamp/action-slack-notify@v2.3.2
-        if: contains(needs.*.result, 'failure') || failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
           SLACK_TITLE: GitHub Actions 失敗通知
@@ -48,3 +47,8 @@ jobs:
             リポジトリ: ${{ github.repository }}
             ブランチ: ${{ github.ref_name }}
             実行URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+
+  # # わざと失敗させるステップを追加: You have an error in your yaml syntax on line
+  # - name: Force Failure
+  #   run: exit 1
