@@ -26,7 +26,6 @@ jobs:
           github.event_name == 'pull_request' && 'stg' || 
           github.ref == 'refs/heads/develop' && 'dev' 
         }}
-        jj；あdlfkjs
     secrets:
       # SLACK_WEBHOOK_URL_STG: ${{ secrets.SLACK_WEBHOOK_URL_STG }}
       SLACK_WEBHOOK_URL_FAILED: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
