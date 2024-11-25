@@ -12,6 +12,10 @@ on:
     # synchronize: プルリクエストが更新されたとき
     types: [opened, synchronize]
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   call-deployment-workflow:
     uses: Syota622/github_action_common/.github/workflows/deploy.yml@main
@@ -22,3 +26,29 @@ jobs:
           github.event_name == 'pull_request' && 'stg' || 
           github.ref == 'refs/heads/develop' && 'dev' 
         }}
+    secrets:
+      SLACK_WEBHOOK_URL_FAILED: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
+      SLACK_WEBHOOK_URL_FAILED_2: ${{ secrets.SLACK_WEBHOOK_URL_FAILED_2 }}
+
+  notify-error:
+    needs: [call-deployment-workflow]
+    if: failure()  # 失敗時のみ実行
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Errors
+        uses: rtCamp/action-slack-notify@v2.3.2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
+          SLACK_TITLE: GitHub Actions 失敗通知
+          SLACK_COLOR: danger
+          SLACK_MESSAGE: |
+            <!here> GitHub Actionsが失敗しました
+            ワークフロー: ${{ github.workflow }}
+            リポジトリ: ${{ github.repository }}
+            ブランチ: ${{ github.ref_name }}
+            実行URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+
+  # # わざと失敗させるステップを追加: You have an error in your yaml syntax on line
+  # - name: Force Failure
+  #   run: exit 1
