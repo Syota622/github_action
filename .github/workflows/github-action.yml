@@ -33,3 +33,18 @@ jobs:
       # わざと失敗させるステップを追加
       - name: Force Failure
         run: exit 1
+
+      # GitHub Actions全体の失敗時のみ通知
+      - name: Slack Notification on Failure
+        uses: rtCamp/action-slack-notify@v2.3.2
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_FAILED }}
+          SLACK_TITLE: GitHub Actions 失敗通知
+          SLACK_COLOR: danger
+          SLACK_MESSAGE: |
+            <!here> GitHub Actionsが失敗しました
+            ワークフロー: ${{ github.workflow }}
+            リポジトリ: ${{ github.repository }}
+            ブランチ: ${{ github.ref_name }}
+            実行URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
